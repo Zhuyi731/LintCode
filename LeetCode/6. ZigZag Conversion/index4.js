@@ -4,6 +4,7 @@
  * @return {string}
  */
 var convert = function(s, numRows) {
+    if(numRows == 1) return s;
     let len = s.length,
         interval = 2 * numRows - 2,
         depth, cur,
