@@ -1,2 +1,1 @@
-# LintCode
-LintCode 刷题代码
+# LeetCode和LintCode的刷题代码
