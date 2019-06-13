@@ -11,40 +11,40 @@ type ListNode struct {
 }
 
 func main() {
-	l1 := creatListNode("1->2->4")
-	l2 := creatListNode("1->3->4")
-	mergeTwoLists(l1, l2)
+	mergeTwoLists(createListNode("1->2->4"), createListNode("1->3->4"))
 }
+
 func mergeTwoLists(l1 *ListNode, l2 *ListNode) *ListNode {
 	//让l1的第一个节点总是最小
-	if l1.Val > l2.Val {
+	if (*l1).Val > (*l2).Val {
 		temp := &l1
 		l1 = l2
 		l2 = *temp
 	}
+	 ret := l1 
 
 	curL1Node := &l1
 	curL2Node := &l2
 
 	for {
-		if (*curL1Node).Next != nil {
+		if (*curL1Node).Next == nil {
 			break
 		}
 		if (*curL1Node).Next.Val >= (*curL2Node).Val {
 			tempNext := (*curL1Node).Next
 			(*curL1Node).Next = *curL2Node
+			curL2Node = &(*curL2Node).Next
 			curL1Node = &(*curL1Node).Next
 			(*curL1Node).Next = tempNext
-			curL2Node = &(*curL2Node).Next
 		} else {
 			curL1Node = &(*curL1Node).Next
 		}
 	}
 
-	return l1
+	return ret
 }
 
-func creatListNode(nodeString string) *ListNode {
+func createListNode(nodeString string) *ListNode {
 	nodeList := ListNode{}
 	node := strings.Split(nodeString, "->")
 	curNode := &nodeList
