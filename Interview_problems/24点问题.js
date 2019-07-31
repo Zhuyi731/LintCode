@@ -22,9 +22,10 @@ function get24Possibility () {
 
     let temp
     for (i1 = 1; i1 < 11; i1++) {
+        console.log(`已计算${i1 - 1}000个`)
         for (i2 = 1; i2 < 11; i2++) {
             for (i3 = 1; i3 < 11; i3++) {
-                console.log(`已计算${i1 - 1}${i2 - 1}${i3 - 1}0个`)
+                // console.log(`已计算${i1 - 1}${i2 - 1}${i3 - 1}0个`)
                 for (i4 = 1; i4 < 11; i4++) {
                     min = [i1, i2, i3, i4].map(el => {
                         return el == 10 ? 0 : el
@@ -52,10 +53,8 @@ function get24Possibility () {
                     }
                 }
             }
-
         }
     }
-
 
     let possibles = [], impossibles = []
     let singleSolution = []
@@ -83,6 +82,7 @@ function filterDuplicate (expressions) {
         for (j = 0; j < len; j++) {
             if (expressions[i] === expressions[j]) {
                 expressions.splice(j, 1)
+                j--
                 len--
             }
         }
@@ -148,15 +148,19 @@ function GetReversePolishNotation (expression) {
         }
     })
     //获取到operatorProcess之后再进行一遍排序
-    for (let i = 0; i < operatorProcess.length; i++) {
-        if (operatorProcess[i] == '+' || operatorProcess[i] === "*") {
-            if (operatorProcess[i - 1] > operatorProcess[i + 1]) {
-                temp = operatorProcess[i - 1]
-                operatorProcess[i - 1] = operatorProcess[i + 1]
-                operatorProcess[i + 1] = temp
+    if (Math.abs(numberStack[0] - 24) < 0.0002) {
+        for (let i = 0; i < operatorProcess.length; i++) {
+            if (operatorProcess[i] == '+' || operatorProcess[i] === "*") {
+                if (operatorProcess[i - 1] > operatorProcess[i + 1]) {
+                    temp = operatorProcess[i - 1]
+                    operatorProcess[i - 1] = operatorProcess[i + 1]
+                    operatorProcess[i + 1] = temp
+                }
             }
         }
+        console.log()
     }
+
     return [numberStack[0], operatorProcess.join('')]
 }
 
