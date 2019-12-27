@@ -1,7 +1,8 @@
 // 1-10 4种花色的牌 
 // 随机抽取4张 算24点（加减乘除小括号），能得出24的概率是多少？
 //  附加题：其中只能用一种算式计算出24的 有多少个？
-
+const fs = require('fs')
+const path = require('path')
 //采用逆波兰表达式来计算   
 //逆波兰表达式在4个数的时候仅5种
 // aaaa+++  
@@ -69,6 +70,7 @@ function get24Possibility () {
     console.log('可计算的24点个数' + possibles.length)
     console.log('不可计算的24点个数' + impossibles.length)
     console.log('概率' + (possibles.length * 100 / (possibles.length + impossibles.length)).toFixed(2) + '%')
+    fs.writeFileSync(path.join(__dirname,'../impos.txt'),impossibles.join('\r\n'),'utf-8')
 }
 
 function filterDuplicate (expressions) {
