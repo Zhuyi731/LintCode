@@ -58,7 +58,7 @@ var uniquePathsWithObstacles = function (obstacleGrid) {
                 ans[i][j] += ans[i - 1][j]
             }
             if (j && obstacleGrid[i][j - 1] !== 1) {
-                ans[i][j] += ans[i][j - 1]
+                ans[i][j] += ans[i][j - 1] 
             }
         }
     }
