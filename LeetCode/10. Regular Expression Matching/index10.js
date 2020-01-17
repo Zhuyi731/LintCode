@@ -3,48 +3,67 @@
  * @param {string} p
  * @return {boolean}
  */
-var isMatch = function(s, p) {
-    let sIndex = 0,
-        pIndex = 0,
-        ans = false;
-
+var isMatch = function (s, p) {
+    let dp = [] // dp[i][j] 表示 s的前i个字符串是否与p的前j个字符串匹配  
     for (let i = 0; i < s.length; i++) {
-        if (p[pIndex + 1] == "*") {
-            while ((s[i] == p[pIndex] || p[pIndex] == ".") && i < s.length) {
-                if (isMatch(s.substring(i + 1, s.length), p.substring(pIndex + 2, p.length))) {
-                    return true;
+        dp[i] = []
+        for (let j = 0; j < p.length; j++) {
+            if (j === 0) {
+                if (i === 0) {
+                    if (s[i] === p[j] || p[j] === '.') {
+                        dp[i][j] = true
+                    } else {
+                        dp[i][j] = false
+                    }
+                } else {
+                    dp[i][j] = false
                 }
-                i++;
-            }
-            i--;
-            pIndex += 2;
-        } else {
-            if (s[i] == p[pIndex] || p[pIndex] == ".") {
-                pIndex++;
             } else {
-                return false;
+                if (i === 0) {
+                    if (dp[i][j - 1] && p[j] === '*' && p[j - 1] === s[i - 1]) {
+                        dp[i][j] = true
+                    } else if (p[j] === '*' && ((j > 1 && dp[i][j - 2]))) {
+                        dp[i][j] = true
+                    } else {
+                        dp[i][j] = false
+                    }
+                } else if (dp[i - 1][j - 1]) {
+                    if (s[i] === p[j] || p[j] === '.') {
+                        dp[i][j] = true
+                    } else if (p[j] === '*' && (s[i - 1] === p[i - 1] || p[i - 1] === '.')) {
+                        dp[i][j] = true
+                    } else {
+                        dp[i][j] = false
+                    }
+                } else if (dp[i][j - 1] && p[j] === '.') { // 如果s[i] 和 p[j-1]匹配
+                    dp[i][j] = true
+                } else if (dp[i - 1][j]) {// 如果s[i-1] 和 p[j]匹配
+                    if (p[j] === '*' && (p[j - 1] === s[i - 1] || p[j - 1] === '.' || (s[i] === s[i - 1]))) {
+                        dp[i][j] = true
+                    } else {
+                        dp[i][j] = false
+                    }
+                } else if (j > 1 && dp[i][j - 2] && p[j] === '*') {
+                    dp[i][j] = true
+                } else {
+                    dp[i][j] = false
+                }
             }
         }
     }
-
-    if (pIndex == p.length) {
-        return true;
-    } else {
-        if (p.substring(pIndex, p.length).replace(/([a-z]\*)/g, "") == "") {
-            return true;
-        }
-        return false;
-    }
+    return dp[s.length - 1][p.length - 1]
 };
-console.log(isMatch("a", "ab*")); //true
+
+console.log(isMatch("aab", "c*a*b*")); //true
 console.log(isMatch("aaa", "ab*a*c*a")); //true
+console.log(isMatch("a", "ab*")); //true
 console.log(isMatch("abcbcsdcbc", ".*cbc.*cba")); //false
 console.log(isMatch("ab", ".*c"));
 console.log(isMatch("aa", "a")); //false
 console.log(isMatch("aa", "a*")); //true
 console.log(isMatch("ab", ".*")); //true
-console.log(isMatch("aab", "c*a*b*")); //true
 console.log(isMatch("mississippi", "mis*is*p*.")); //false
+console.log(isMatch('bbbba', '.*a*a')) // true
 
 /**
 Given an input string (s) and a pattern (p), implement regular expression matching with support for '.' and '*'.
