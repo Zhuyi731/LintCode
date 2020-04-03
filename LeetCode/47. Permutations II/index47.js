@@ -16,7 +16,7 @@
  */
 var permuteUnique = function (nums) {
     let ans = []
-
+    nums = nums.sort()
     getPermute([], nums.map(el => false))
     function getPermute(cur, curUsed) {
         let ct = 0
