@@ -60,9 +60,9 @@ var reverseKGroup = function (head, k) {
 };
 // @lc code=end
 
-// const { ListNodeGeneratorByArr } = require("../../js_utils/index");
+const { ListNodeGeneratorByArr } = require("../../js_utils/index");
 
-// // reverseKGroup(ListNodeGeneratorByArr([1, 2, 3, 4, 5]), 5);
-// // reverseKGroup(ListNodeGeneratorByArr([1, 2, 3, 4, 5]), 4);
-// reverseKGroup(ListNodeGeneratorByArr([1, 2, 3, 4, 5]), 3);
-// reverseKGroup(ListNodeGeneratorByArr([1, 2, 3, 4, 5]), 2);
+// reverseKGroup(ListNodeGeneratorByArr([1, 2, 3, 4, 5]), 5);
+// reverseKGroup(ListNodeGeneratorByArr([1, 2, 3, 4, 5]), 4);
+reverseKGroup(ListNodeGeneratorByArr([1, 2, 3, 4, 5]), 3);
+reverseKGroup(ListNodeGeneratorByArr([1, 2, 3, 4, 5]), 2);
