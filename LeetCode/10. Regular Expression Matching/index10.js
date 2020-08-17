@@ -4,66 +4,55 @@
  * @return {boolean}
  */
 var isMatch = function (s, p) {
-    let dp = [] // dp[i][j] 表示 s的前i个字符串是否与p的前j个字符串匹配  
-    for (let i = 0; i < s.length; i++) {
-        dp[i] = []
-        for (let j = 0; j < p.length; j++) {
-            if (j === 0) {
-                if (i === 0) {
-                    if (s[i] === p[j] || p[j] === '.') {
-                        dp[i][j] = true
-                    } else {
-                        dp[i][j] = false
-                    }
-                } else {
-                    dp[i][j] = false
-                }
-            } else {
-                if (i === 0) {
-                    if (dp[i][j - 1] && p[j] === '*' && p[j - 1] === s[i - 1]) {
-                        dp[i][j] = true
-                    } else if (p[j] === '*' && ((j > 1 && dp[i][j - 2]))) {
-                        dp[i][j] = true
-                    } else {
-                        dp[i][j] = false
-                    }
-                } else if (dp[i - 1][j - 1]) {
-                    if (s[i] === p[j] || p[j] === '.') {
-                        dp[i][j] = true
-                    } else if (p[j] === '*' && (s[i - 1] === p[i - 1] || p[i - 1] === '.')) {
-                        dp[i][j] = true
-                    } else {
-                        dp[i][j] = false
-                    }
-                } else if (dp[i][j - 1] && p[j] === '.') { // 如果s[i] 和 p[j-1]匹配
-                    dp[i][j] = true
-                } else if (dp[i - 1][j]) {// 如果s[i-1] 和 p[j]匹配
-                    if (p[j] === '*' && (p[j - 1] === s[i - 1] || p[j - 1] === '.' || (s[i] === s[i - 1]))) {
-                        dp[i][j] = true
-                    } else {
-                        dp[i][j] = false
-                    }
-                } else if (j > 1 && dp[i][j - 2] && p[j] === '*') {
-                    dp[i][j] = true
-                } else {
-                    dp[i][j] = false
-                }
-            }
-        }
-    }
-    return dp[s.length - 1][p.length - 1]
-};
+  let dp = [[true]]; // dp[i][j] 表示 s的前i个字符串是否与p的前j个字符串匹配
+  for (let i = 0; i <= s.length; i++) {
+    dp[i] = [];
 
-console.log(isMatch("aab", "c*a*b*")); //true
+    for (let j = 0; j <= p.length; j++) {
+      if (i == 0) {
+        if (j === 0) {
+          dp[i][j] = true;
+          continue;
+        }
+
+        if (p[j - 1] === "*") {
+          // 如果为通配
+          dp[i][j] = dp[i][j - 2];
+        } else {
+          dp[i][j] = false;
+        }
+      } else {
+        if (j == 0) {
+          dp[i][j] = false;
+          continue;
+        }
+        if (p[j - 1] === "*") {
+          // 如果为通配
+          if (p[j - 2] === "." || s[i - 1] === p[j - 2]) {
+            dp[i][j] = dp[i - 1][j] || (j >= 2 && dp[i][j - 2]); // 匹配一个 或者不匹配
+          } else {
+            dp[i][j] = (j >= 2 && dp[i][j - 2]) || false; // 不匹配  或者false
+          }
+        } else if (p[j - 1] === "." || s[i - 1] === p[j - 1]) {
+          dp[i][j] = dp[i - 1][j - 1];
+        } else {
+          dp[i][j] = false;
+        }
+      }
+    }
+  }
+  return !!dp[s.length][p.length];
+};
 console.log(isMatch("aaa", "ab*a*c*a")); //true
 console.log(isMatch("a", "ab*")); //true
-console.log(isMatch("abcbcsdcbc", ".*cbc.*cba")); //false
-console.log(isMatch("ab", ".*c"));
-console.log(isMatch("aa", "a")); //false
 console.log(isMatch("aa", "a*")); //true
+console.log(isMatch("abcbcsdcbc", ".*cbc.*cba")); //false
+console.log(isMatch("aab", "c*a*b*")); //true
+console.log(isMatch("ab", ".*c")); //false
+console.log(isMatch("aa", "a")); //false
 console.log(isMatch("ab", ".*")); //true
 console.log(isMatch("mississippi", "mis*is*p*.")); //false
-console.log(isMatch('bbbba', '.*a*a')) // true
+console.log(isMatch("bbbba", ".*a*a")); // true
 
 /**
 Given an input string (s) and a pattern (p), implement regular expression matching with support for '.' and '*'.
