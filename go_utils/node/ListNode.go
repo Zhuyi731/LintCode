@@ -1,6 +1,7 @@
 package node
 
 import (
+	"fmt"
 	"strconv"
 	"strings"
 )
@@ -9,6 +10,24 @@ import (
 type ListNode struct {
 	Val  int       //当前节点的值
 	Next *ListNode // 下一节点指针
+}
+
+func PrintListNode(node *ListNode) {
+	bak := node
+	isFirst := true
+	for {
+		if bak == nil {
+			fmt.Println("")
+			return
+		}
+		if isFirst {
+			fmt.Print(bak.Val)
+			isFirst = false
+		} else {
+			fmt.Print("->", bak.Val)
+		}
+		bak = bak.Next
+	}
 }
 
 // CreateListNode 通过string 创建链表结构

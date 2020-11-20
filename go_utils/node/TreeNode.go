@@ -37,7 +37,7 @@ func CreateTestData(data string) *TreeNode {
 				treeNode[i].Left = treeNode[leftIndex]
 			}
 			rightIndex := leftIndex + 1
-			if rightIndex < length && treeNode[leftIndex] != nil {
+			if rightIndex < length && treeNode[rightIndex] != nil {
 				treeNode[i].Right = treeNode[rightIndex]
 			}
 		}
