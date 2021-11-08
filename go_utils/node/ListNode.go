@@ -47,6 +47,21 @@ func CreateListNode(nodeString string) *ListNode {
 	return &nodeList
 }
 
+func CreateListNodeBySlice(nodes []int) *ListNode {
+	nodeList := ListNode{}
+	curNode := &nodeList
+	for index, value := range nodes {
+		curNode.Val = value
+		if index != len(node)-1 {
+			tempNode := &ListNode{}
+			curNode.Next = tempNode
+			curNode = tempNode
+		}
+	}
+
+	return &nodeList
+}
+
 // Node 无向图结构
 type Node struct {
 	Val       int     //当前节点值
